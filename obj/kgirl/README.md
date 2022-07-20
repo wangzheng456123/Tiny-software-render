@@ -12,10 +12,5 @@
 
 [creativecommons.org/licenses/by-nc-nd/4.0/](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-## Preprocessor
 
-[scripts/kgirl.py](../../scripts/kgirl.py)
 
-## Screenshot
-
-![Screenshot](screenshot.gif)
