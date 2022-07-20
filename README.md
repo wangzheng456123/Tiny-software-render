@@ -22,16 +22,21 @@ Then you will see the binary 3dViewer.exe in the release folder.
 
 ## demos 
 ![Skeleton Animation](demos/animation.gif)
+
 Skeleton Animation
 
 ![controlable cameral](demos/cameral.gif)
+
 controlable cameral
 
 ![homogeneous clipping](demos/homo_clipping.png)
+
 homogeneous space clipping
 
 ![shadow map](demos/shadow_map.gif)
+
 shadow map
 
 ![perspective correct interpolation](demos/SDGIF_Rusult_1.gif)
+
 perpective correct interpolation
