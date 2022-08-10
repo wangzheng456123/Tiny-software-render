@@ -1,3 +1,9 @@
+/*
+4x4 matrix class and correponding operations. In computer graphic,
+almost all the matrix we use is 4x4 matrix, so implement only 4x4 matrix 
+opertaion is enough.
+*/
+
 #include <cmath>
 #include "Matrix.h"
 
@@ -42,6 +48,8 @@ Matrix4x4 Mul(const Matrix4x4 &a, const Matrix4x4 &b) {
         }
     return c;
 }
+
+//Gauss-Jordan method to caculate the inverse of a 4x4 matrix.
 
 Matrix4x4 Inverse(const Matrix4x4 &a) {
     double b[4][4];

@@ -1,3 +1,6 @@
+/*
+Transformations on different math objets(vector, point, etc.).
+*/
 #ifndef __TRANSFORM_H__
 #define __TRANSFORM_H__ 1
 
@@ -81,6 +84,5 @@ Transform RotateY(float theta);
 Transform RotateZ(float theta);
 Transform LookAt(const Point3f &pos, const Point3f &look, const Vector3f &up);
 Transform Perspective(float n, float f);
-//Reverse the handness of a transform, see my article for the detail:
 
 #endif

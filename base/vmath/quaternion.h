@@ -1,3 +1,7 @@
+/*
+Quaternion class, it is used to interpolate transformation when 
+implement skeleton animation.
+*/
 #ifndef __QUATERNION_H__
 #define __QUATERNION_H__
 

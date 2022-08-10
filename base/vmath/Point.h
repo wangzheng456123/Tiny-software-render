@@ -1,3 +1,10 @@
+/*
+1, 2, 3, 4 dimension point class. Normally, both vector and point
+can be represented as an array of elements. But some operators and transforms
+work differently on point and vetcor, so the seperation of define of vector and
+point is essential.
+*/
+
 #ifndef __POINT_H__
 #define __POINT_H__ 1
 

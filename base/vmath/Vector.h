@@ -1,3 +1,7 @@
+/*
+2, 3 dimension vector class and operations on it
+*/
+
 #ifndef __VECTOR_H__
 #define __VECTOR_H__ 1
 
