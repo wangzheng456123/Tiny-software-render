@@ -34,10 +34,6 @@ Then you will see the binary 3dViewer.exe in the release folder.
 
 ![homogeneous clipping](demos/homo_clipping.png)
 
-#### shadow map
-
-![shadow map](demos/shadow_map.gif)
-
 #### perpective correct interpolation
 
 ![perspective correct interpolation](demos/SDGIF_Rusult_1.gif)
