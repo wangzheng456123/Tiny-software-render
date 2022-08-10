@@ -1,7 +1,7 @@
 # Tiny software renderer in windows #
 This project is a simple software renderer on Windows. Despite the C/C++ standard libraries and Windows SDK it has no other third party dependency. The features of it includes:
 
-* forward shading and backward shading
+* forward and backward shading
 * programable shader
 * skeleton skinned animation
 * keyborad and mouse controlable cameral
