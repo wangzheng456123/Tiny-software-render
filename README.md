@@ -14,7 +14,7 @@ This project is a simple software renderer on Windows. Despite the C/C++ standar
 ## build 
 To compile the project, you have to intall cmake and visual studio on your  system, clonning this project to your system and type folowing command line :
 
-    cd window
+    cd windows
     mkdir build
     cd build
     cmake ..
