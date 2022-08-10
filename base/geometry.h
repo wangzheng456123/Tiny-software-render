@@ -1,3 +1,8 @@
+/*
+this function caculate the intersection of the optic cone with 
+a triangle mesh, it is used to process the triangle outside the 
+optic cone correctly.
+*/
 #include <vector>
 #include "./vmath/Point.h"
 

@@ -117,8 +117,9 @@ void Cameral::Deffered(Model& model, Point3f* gbuffer_pos, Vector3f* gbuffer_nor
         }
     }
     for (int i = 0; i < w; i++)
-        for (int j = 0; j < h; j++)
+        for (int j = 0; j < h; j++) {
             img.set(i, j, shader.shading(gbuffer_diffuse.get(i, j), gbuffer_normal[i * w + j], gbuffer_pos[i * w + j], pos));
+        }
 }
 
 void Cameral::Save() {

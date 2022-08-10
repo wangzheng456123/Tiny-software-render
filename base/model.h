@@ -1,3 +1,7 @@
+/*
+a simple obj parser to process obj file.
+*/
+
 #ifndef __MODEL_H__
 #define __MODEL_H__
 #include <vector>

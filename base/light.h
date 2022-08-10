@@ -1,3 +1,9 @@
+/*
+Abstracted light class, each new implemented light sorces have
+to write the get_dir and get_intensity method. The two method the
+incident direction and light intensity from the light sorce to point 
+pos.
+*/
 #include "./vmath/Point.h"
 
 class Light {
@@ -6,6 +12,7 @@ public:
     virtual float get_intensity(const Point3f &pos) = 0;
 };
 
+//Directional light source
 class ParLight : public Light {
 public:
     ParLight(Vector3f light_dir) : light_dir(light_dir) {};
@@ -14,6 +21,7 @@ public:
 private: Vector3f light_dir;    
 };
 
+//Point light source
 class PointLight : public Light {
 public :
     PointLight(Point3f src) : src(src) {};
