@@ -30,10 +30,6 @@ Then you will see the binary 3dViewer.exe in the release folder.
 
 ![controlable cameral](demos/cameral.gif)
 
-#### homogeneous space clipping
-
-![homogeneous clipping](demos/homo_clipping.png)
-
 #### perpective correct interpolation
 
 ![perspective correct interpolation](demos/SDGIF_Rusult_1.gif)
