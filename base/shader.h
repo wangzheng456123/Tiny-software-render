@@ -1,3 +1,8 @@
+/*
+The shader class hold the contant data in one pass.
+It also supply the vertex and fragment method to make the
+render pipelien programmable in some extent. 
+*/
 #ifndef __SHADER_H__
 #define __SHADER_H__ 1
 
@@ -41,7 +46,7 @@ struct Phong : public iShader {
         Vector2f &uv0 = vary_uv[0], &uv1 = vary_uv[1], &uv2 = vary_uv[2];
         Vector2f uv = __uv(bar, uv0, uv1, uv2);
         Point3f pos = __interp_pos(bar, p0, p1, p2);
-        Vector3f light_dir = -light->get_dir(pos);
+        Vector3f light_dir = light->get_dir(pos);
         float intensity = light->get_intensity(pos);
         Vector3f normal = Normalize(model.normal(uv));
         Vector3f bisect = Normalize((view - pos) - light_dir);
@@ -49,8 +54,7 @@ struct Phong : public iShader {
         spec = (std::pow)(spec, 3);
         float dif = (std::max)(Dot(normal, light_dir), 0.f);
         TGAColor c = model.diffuse(uv);
-        for (int i = 0; i < 3; i++) color[i] = (std::min)(255.f, (float)(0.f + c[i] * (1 * dif + 1.6 * spec)));
-        //std::cout << (float)color[0] << " " << (float)color[1] << " " << (float)color[2] << "\n";
+        for (int i = 0; i < 3; i++) color[i] = (std::min)(255.f, (float)(c[i] * (2 + 1.6 * spec)) * dif);
         return 1;
     };
 };
@@ -87,16 +91,8 @@ struct Animation : public iShader {
         vary_uv[nthvert] = __uv(bar, uv0, uv1, uv2);
     };
     virtual int fragment(Model& model, Vector3f& bar, TGAColor& color) {
-        Point3f pos = __interp_pos(bar, vary_point[0], vary_point[1], vary_point[2]);
-        Vector3f normal = __interp_norms(bar, vary_normal[0], vary_normal[1], vary_normal[2]);
-        Vector3f light_dir = light->get_dir(pos);
-        float intensity = light->get_intensity(pos);
-        intensity = (std::max)(Dot(normal, light_dir), 0.f);
         Vector2f uv = __uv(bar, vary_uv[0], vary_uv[1], vary_uv[2]);
-        TGAColor c = model.diffuse(uv);
-        for (int i = 0; i < 3; i++)
-            color[i] = (std::min)(c[i] * intensity * 3, 255.f);
-        color = c;
+        color = model.diffuse(uv);
         return 1;
     };
 };
@@ -157,14 +153,34 @@ struct Shadow : public iShader {
         Vector3f light_dir = light->get_dir(pos);
         float intensity = light->get_intensity(pos);
         Vector3f normal = Normalize(model.normal(uv));
-        Vector3f bisect = Normalize((pos - view) + light_dir);
+        Vector3f bisect = Normalize((view - pos) - light_dir);
         float spec = (std::max)(Dot(bisect, normal), 0.f);
         spec = (std::pow)(spec, 3);
         float dif = (std::max)(Dot(normal, light_dir), 0.f);
         TGAColor c = model.diffuse(uv);
-        for (int i = 0; i < 3; i++) color[i] = (std::min)(255.f, shadow * (float)(20.f + c[i] * (1 * dif + 1.6 * spec)));
+        for (int i = 0; i < 3; i++) color[i] = (std::min)(255.f, shadow * (float)(c[i] * (2 + 1.6 * spec)) * dif);
         return 1;
     };
+};
+
+struct deffered_shading_phong {
+    deffered_shading_phong(const std::vector<Light*> &light) : light(light) {};
+    std::vector<Light*> light;
+    TGAColor shading(const TGAColor& Diffuse, const Vector3f& Normal, const Point3f& pos, const Point3f& view) const {
+        TGAColor c = TGAColor(0, 0, 0);
+        for (int i = 0; i < light.size(); i++) {
+            Light *l = light[i];
+            Vector3f light_dir = l->get_dir(pos);
+            float intensity = l->get_intensity(pos);
+            Vector3f normal = Normalize(Normal);
+            Vector3f bisect = Normalize((view - pos) - light_dir);
+            float spec = (std::max)(Dot(bisect, normal), 0.f);
+            spec = (std::pow)(spec, 3);
+            float dif = (std::max)(Dot(normal, light_dir), 0.f);
+            for (int j = 0; j < 3; j++) c[j] = (std::min)(255.f, c[j] + (float)(Diffuse.bgra[j] * (2 + 1.6 * spec)) * dif);
+        }
+        return c;
+    }
 };
 
 #endif

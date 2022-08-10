@@ -23,7 +23,6 @@ void Cameral::Raterize(Model &model, iShader &shader, float zbuffer[]) {
             int id = model.vertid(i, j);
             vert[j] = world2cameral(model.vert(i, j)).z;
             NDCvert[j] = world2NDC(shader.vertex(model, i, j));
-            //NDCvert[j].print();
             in_list[0].push_back(NDCvert[j]);
         }
         for (int j = 0; j < 7; j++) {
@@ -34,12 +33,9 @@ void Cameral::Raterize(Model &model, iShader &shader, float zbuffer[]) {
         for (int j = 1; j < num_vert - 1; j++) {
             int idx[3];
             idx[0] = 0, idx[1] = j, idx[2] = j + 1;
-            for (int k = 0; k < 3; k++) {
-                //the uv coordinate of the clipped vertex have to be caculated in homogenous space, see my artilce for the 
-                //detail of the proof: 
+            for (int k = 0; k < 3; k++) { 
                 Vector3f bar = GetBar(NDCvert[0].proj(), NDCvert[1].proj(), NDCvert[2].proj(), out_list[idx[k]].proj());
                 z[k] = bar[0] * vert[0] + bar[1] * vert[1] + bar[2] * vert[2];
-                //it is not the geometry shader you think, see my article for the detail:
                 shader.geometry(model, bar, k);
                 tri_vert[k] = viewport(out_list[idx[k]]);
             }
@@ -62,7 +58,7 @@ void Cameral::Raterize(Model &model, iShader &shader, float zbuffer[]) {
                     Vector3f bar = GetBar(tri_vert[0].p3(), tri_vert[1].p3(), tri_vert[2].p3(), Point3f(x, y, 1));
                     if (bar.x < 0 || bar.y < 0 || bar.z < 0) continue;
                     float zn = 1 / (bar[0] / z[0] + bar[1] / z[1] + bar[2] / z[2]);
-                    //bar[0] *= zn / z[0], bar[1] *= zn / z[1], bar[2] *= zn / z[2];
+                    bar[0] *= zn / z[0], bar[1] *= zn / z[1], bar[2] *= zn / z[2];
                     float cz = 0;
                     for (int k = 0; k < 3; k++) cz += bar[k] * (tri_vert[k].z / tri_vert[k].w);
                     if (cz >= zbuffer[y * w + x]) continue;
@@ -74,6 +70,55 @@ void Cameral::Raterize(Model &model, iShader &shader, float zbuffer[]) {
             }
         }
     }
+}
+
+void Cameral::Deffered(Model& model, Point3f* gbuffer_pos, Vector3f* gbuffer_normal, 
+    TGAImage gbuffer_diffuse, float zbuffer[], const deffered_shading_phong &shader) {
+    int w = img.get_width(), h = img.get_height();
+    Transform world2NDC = (this->Cameral2NDC() * this->World2Cameral());
+    Transform world2cameral = this->World2Cameral();
+    Transform viewport = Scale(w / 2, h / 2, 1) * Translate(Vector3f(1, 1, 1));
+    int num_face = model.nfaces();
+    Vector2f tri_uv[3];
+    Point3f tri_vert[3], tri_pos[3];
+    Vector3f tri_normal[3];
+    for (int i = 0; i < num_face; i++) {
+        for (int j = 0; j < 3; j++) {
+            tri_pos[j] = model.vert(i, j);
+            tri_vert[j] = (viewport * world2NDC)(model.vert(i, j));
+            tri_uv[j] = model.uv(i, j);
+            tri_normal[j] = model.normal(i, j);
+        }
+        int x0 = w, x1 = 0, y0 = h, y1 = 0;
+        for (int k = 0; k < 3; k++) {
+            Point3f& p = tri_vert[k];
+            x0 = (std::min)(x0, (int)std::floor(p.x));
+            x1 = (std::max)(x1, (int)std::ceil(p.x));
+            y0 = (std::min)(y0, (int)std::floor(p.y));
+            y1 = (std::max)(y1, (int)std::ceil(p.y));
+        }
+        x0 = std::max(0, x0), x1 = std::min(w - 1, x1);
+        y0 = std::max(0, y0), y1 = std::min(h - 1, y1);
+        for (int y = y0; y <= y1; y++) {
+            for (int x = x0; x <= x1; x++) {
+                Vector3f bar = GetBar(tri_vert[0], tri_vert[1], tri_vert[2], Point3f(x, y, 1));
+                if (bar.x < 0 || bar.y < 0 || bar.z < 0) continue;
+                float zn = 1 / (bar[0] / tri_vert[0].z + bar[1] / tri_vert[1].z + bar[2] / tri_vert[2].z);
+                bar[0] *= zn / tri_vert[0].z, bar[1] *= zn / tri_vert[1].z, bar[2] *= zn / tri_vert[2].z;
+                float cz = 0;
+                for (int k = 0; k < 3; k++) cz += bar[k] * tri_vert[k].z;
+                if (cz >= zbuffer[y * w + x]) continue;
+                zbuffer[y * w + x] = cz;
+                Vector2f uv = __uv(bar, tri_uv[0], tri_uv[1], tri_uv[2]);
+                gbuffer_normal[y * w + x] = model.normal(uv);
+                gbuffer_diffuse.set(y, x, model.diffuse(uv));
+                gbuffer_pos[y * w + x] = __interp_pos(bar, tri_vert[0], tri_vert[1], tri_vert[2]);
+            }
+        }
+    }
+    for (int i = 0; i < w; i++)
+        for (int j = 0; j < h; j++)
+            img.set(i, j, shader.shading(gbuffer_diffuse.get(i, j), gbuffer_normal[i * w + j], gbuffer_pos[i * w + j], pos));
 }
 
 void Cameral::Save() {

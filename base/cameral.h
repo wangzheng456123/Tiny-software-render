@@ -1,3 +1,7 @@
+/*
+the cameral class implement the forward rendering process and 
+encaplising the basic render pipeline state.
+*/
 #include "tgaimage.h"
 #include "./vmath/Transform.h"
 #include "shader.h"
@@ -36,7 +40,11 @@ public:
         float left, float right  
     ) : look(look), pos(pos), up(up), img(img), _near(_near), _far(_far), 
         bottom(bottom), top(top), left(left), right(right) {};
+    // Forward rederding
     void Raterize(Model &model, iShader &shader, float zbuffer[]) ;
+    // Deffered rendering
+    void Deffered(Model &model, Point3f *gbuffer_pos, Vector3f *gbuffer_normal, 
+        TGAImage gbuffer_diffuse, float zbuffer[], const deffered_shading_phong& shader);
     void update_look(Vector2f offset);
     void update_pos(Vector2f offset, int dolly);
     void Save();
