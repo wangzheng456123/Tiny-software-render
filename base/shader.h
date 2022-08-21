@@ -19,7 +19,7 @@ Point3f __interp_pos(Vector3f bar, Point3f p1, Point3f p2, Point3f p3);
 Vector3f __interp_norms(Vector3f bar, Vector3f n0, Vector3f n1, Vector3f n2);
 
 struct iShader {
-    ~iShader() {};
+    virtual ~iShader() = 0;
     virtual Point4f vertex(Model& model, int nface, int nthvert) = 0;
     virtual void geometry(Model& model, Vector3f &bar, int nthvert) = 0;
     virtual int fragment(Model &model, Vector3f &bar, TGAColor &color) = 0;  

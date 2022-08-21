@@ -3,6 +3,24 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <memory>
+
+framebuffer::framebuffer(int width, int height, int bpp) : width(width), height(height), bpp(bpp) {
+    color_buffer = new unsigned char[width * height * bpp];
+    depth_buffer = new float[width * height];
+}
+
+framebuffer::~framebuffer() {
+    delete color_buffer;
+    delete depth_buffer;
+}
+
+Cameral::Cameral(
+    const TGAImage& img, const Point3f& pos, const Point3f& look,
+    const Vector3f& up, float _near, float _far, float bottom, float top,
+    float left, float right
+) : look(look), pos(pos), up(up), img(img), _near(_near), _far(_far),
+bottom(bottom), top(top), left(left), right(right) {}
 
 void Cameral::Raterize(Model &model, iShader &shader, float zbuffer[]) {
     int w = img.get_width(), h = img.get_height();

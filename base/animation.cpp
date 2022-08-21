@@ -1,8 +1,17 @@
 #include "animation.h"
 #include <sstream>
 #include <fstream>
+/*
+std::vector<Joint> joints;
+std::vector<int> *adj;
+float max_time, min_time;
+void clear();
+*/
 
-Skeleton::Skeleton(const std::string &filename) {
+Joint::Joint() : model2joint(), joint2parent(), joint2world(), transvert(), transnorm(),
+tframe(0), qframe(0), sframe(0), idx(0), p(0), skeleton(nullptr) {}
+
+Skeleton::Skeleton(const std::string &filename) : max_time(0), min_time(0) {
     std::ifstream in;
     in.open (filename, std::ifstream::in);
     if (in.fail()) return;

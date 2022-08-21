@@ -8,6 +8,7 @@ pos.
 
 class Light {
 public:
+    virtual ~Light() = 0;
     virtual Vector3f get_dir(const Point3f &pos) = 0;
     virtual float get_intensity(const Point3f &pos) = 0;
 };
@@ -15,7 +16,7 @@ public:
 //Directional light source
 class ParLight : public Light {
 public:
-    ParLight(Vector3f light_dir) : light_dir(light_dir) {};
+    ParLight(Vector3f light_dir);
     virtual Vector3f get_dir(const Point3f &pos) {return Normalize(light_dir);};
     virtual float get_intensity(const Point3f &pos) {return 1.;};
 private: Vector3f light_dir;    
@@ -24,7 +25,7 @@ private: Vector3f light_dir;
 //Point light source
 class PointLight : public Light {
 public :
-    PointLight(Point3f src) : src(src) {};
+    PointLight(Point3f src);
     virtual Vector3f get_dir(const Point3f &pos) {return Normalize(pos - src);};
     virtual float get_intensity(const Point3f &pos) {return 3. / (pos - src).Length();};
 private : 

@@ -14,3 +14,5 @@ Vector3f __interp_norms(Vector3f bar, Vector3f n0, Vector3f n1, Vector3f n2) {
     Vector3f nx(n0.x, n1.x, n2.x), ny(n0.y, n1.y, n2.y), nz(n0.z, n1.z, n2.z);
     return Vector3f(Dot(bar, nx), Dot(bar, ny), Dot(bar, nz));
 }
+
+iShader::~iShader() {}

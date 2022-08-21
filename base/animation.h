@@ -25,9 +25,8 @@ struct Joint {
     Transform joint2parent, joint2world; //current joint space to parrent joint space and current joint space to world space transform  
     Transform transvert, transnorm;
     void update(float ctime);
-    Joint() : model2joint(), joint2parent(), joint2world(),
-              tframe(0), qframe(0), sframe(0) {};
-    Skeleton *skeleton; 
+    Skeleton* skeleton;
+    Joint();
 };
 
 //meta data about the skeleton is maitained in the skeleton data structure.

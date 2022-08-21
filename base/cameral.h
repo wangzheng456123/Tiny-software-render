@@ -12,14 +12,8 @@ struct framebuffer {
     int width, height, bpp;
     unsigned char *color_buffer;
     float *depth_buffer;
-    framebuffer(int width, int height, int bpp) : width(width), height(height), bpp(bpp) {
-        color_buffer = new unsigned char[width * height * bpp];
-        depth_buffer = new float[width * height];
-    };
-    ~framebuffer() {
-        delete color_buffer;
-        delete depth_buffer;
-    };
+    framebuffer(int width, int height, int bpp);
+    ~framebuffer();
     void clear() {
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++) {
@@ -35,11 +29,10 @@ struct framebuffer {
 class Cameral {
 public:
     Cameral(
-        const TGAImage &img, const Point3f &pos, const Point3f &look,
-        const Vector3f &up, float _near, float _far, float bottom, float top,
-        float left, float right  
-    ) : look(look), pos(pos), up(up), img(img), _near(_near), _far(_far), 
-        bottom(bottom), top(top), left(left), right(right) {};
+        const TGAImage& img, const Point3f& pos, const Point3f& look,
+        const Vector3f& up, float _near, float _far, float bottom, float top,
+        float left, float right
+    );
     // Forward rederding
     void Raterize(Model &model, iShader &shader, float zbuffer[]) ;
     // Deffered rendering
