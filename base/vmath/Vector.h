@@ -18,10 +18,6 @@ public:
         if (i == 0) return x;
         return y;
     };
-    Vector2<T> &operator= (const Vector2<T> &a) {
-        x = a.x, y = a.y;
-        return *this;
-    };
     Vector2<T> operator+ (const Vector2<T> &a) const {
         return Vector2(x + a.x, y + a.y);
     };
@@ -57,10 +53,6 @@ public:
         if (i == 0) return x;
         else if (i == 1) return y;
         return z;
-    };
-    Vector3<T> &operator= (const Vector3<T> &a) {
-        x = a.x, y = a.y, z = a.z;
-        return *this;
     };
     Vector3<T> operator+ (const Vector3<T> &a) const {
         return Vector3(x + a.x, y + a.y, z + a.z);

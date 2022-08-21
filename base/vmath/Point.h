@@ -10,17 +10,12 @@ point is essential.
 
 #include "Vector.h"
 #include <iostream>
-
+ 
 template <typename T> class Point2 {
 public: 
     Point2() : x(0), y(0) {};
     Point2(T x, T y) : x(x), y(y) {}; 
-    ~Point2() {};
     T x, y;
-    Point2<T> &operator= (const Point2 &a) {
-        x = a.x, y = a.y;
-        return *this;
-    };
     T &operator[] (int i) {
         if (i == 0) return x;
         return y;
@@ -41,12 +36,7 @@ template <typename T> class Point3 {
 public: 
     Point3() : x(0), y(0), z(0) {};
     Point3(T x, T y, T z) : x(x), y(y), z(z) {};
-    ~Point3() {};
     T x, y, z;
-    Point3<T> &operator= (const Point3 &a) {
-        x = a.x, y = a.y, z = a.z;
-        return *this;
-    };
     T &operator[] (int i) {
         if (i == 0) return x;
         else if (i == 1) return y;
@@ -81,10 +71,6 @@ public :
     Point4<T> () : x(0), y(0), z(0), w(1) {};
     Point4<T> (T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {};
     Point4<T> (const Point3<T> &p) : x(p.x), y(p.y), z(p.z), w(1) {};
-    Point4<T> &operator=(const Point4<T> b) {
-        x = b.x, y = b.y, z = b.z, w = b.w;
-        return *this;
-    }
     T &operator[] (int i) {
         if (i == 0) return x;
         else if (i == 1) return y;

@@ -7,6 +7,8 @@ opertaion is enough.
 #include <cmath>
 #include "Matrix.h"
 
+Matrix4x4::Matrix4x4() : mat() {}
+
 Matrix4x4::Matrix4x4(float mat[4][4]) {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
