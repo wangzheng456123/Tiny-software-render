@@ -6,6 +6,7 @@
 #include <string.h>
 #include <direct.h>
 #include <windows.h>
+#include <memory>
 #include "../base/cameral.h"
 
 struct State {

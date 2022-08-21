@@ -254,7 +254,7 @@ static void present_surface(Window *window) {
     ReleaseDC(window->handle, window_dc);
 }
 
-void window_draw_buffer(Window *window, framebuffer *buffer) {
+void window_draw_buffer(Window *window, framebuffer* buffer) {
     int w = buffer->width, h = buffer->height;
     unsigned char *src = buffer->color_buffer, *dst = window->surface->color_buffer;
     for (int i = 0; i < h; i++) {
